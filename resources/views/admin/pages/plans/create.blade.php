@@ -10,8 +10,6 @@
     <div class="card">
         <div class="class card-board">
             <form action="{{ route('plans.store') }}" class="form" method="POST">
-                @csrf
-
                 @include('admin.pages.plans._partials.form')
             </form>
         </div>
