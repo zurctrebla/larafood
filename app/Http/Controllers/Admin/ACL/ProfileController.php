@@ -58,14 +58,11 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $profile = $this->repository->where('id', $id)->first();
-
-        if(!$profile)
+        if(!$profile = $this->repository->find($id)){
             return redirect()->back();
+        }
 
-        return view('admin.pages.profiles.show', [
-            'profile' => $profile
-        ]);
+        return view('admin.pages.profiles.show', compact('profile'));
     }
 
     /**

@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Perfis')
+@section('title', "Permissões do perfil {$profile->name}")
 
 @section('content_header')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.index') }}">Dashboard</a></li>
         <li class="breadcrumb-item active"><a href="{{route('profiles.index') }}" class="active">Perfis</a></li>
     </ol>
-    <h1>Perfis<a href="{{ route('profiles.create') }}" class="btn btn-dark">ADD</a></h1>
+    <h1>Permissões disponíveis perfil <strong>{{$profile->name}}</strong></h1>
 @stop
 
 @section('content')
@@ -23,31 +23,41 @@
             <table class="table table-condensed">
                 <thead>
                     <tr>
+                        <th width="50px">#</th>
                         <th>Nome</th>
-                        <th width="250">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($profiles as $profile)
+                    <form action="{{ route('profiles.permissions.attach', $profile->id) }}" method="POST">
+                        @csrf
+
+                        @foreach ($permissions as $permission)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="permissions[]" value="{{$permission->id}}">
+                                </td>
+
+                                <td>
+                                    {{ $permission->name }}
+                                </td>
+                            </tr>
+                        @endforeach
+
                         <tr>
-                            <td>
-                                {{ $profile->name }}
-                            </td>
-                            <td style="width=10px;">
-                                <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-info">Editar</a>
-                                <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-warning">Ver</a>
-                                <a href="{{ route('profiles.permissions', $profile->id) }}" class="btn btn-primary"><i class="fas fa-lock"></i></a>
+                            <td colspan="500">
+                                @include('admin.includes.alerts')
+                                <button type="submit" class="btn btn-success">Vincular</button>
                             </td>
                         </tr>
-                    @endforeach
+                    </form>
                 </tbody>
             </table>
             <div>
                 <div class="card-footer">
                     @if (isset($filters))
-                    {!! $profiles->appends($filters)->links() !!}
+                    {!! $permissions->appends($filters)->links() !!}
                     @else
-                        {!! $profiles->links() !!}
+                        {!! $permissions->links() !!}
                     @endif
                 </div>
         </div>
