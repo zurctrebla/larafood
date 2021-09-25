@@ -12,6 +12,7 @@
 */
 Route::prefix('admin')
         ->namespace('Admin')
+        ->middleware('auth')
         ->group(function(){
 
     /**
@@ -22,6 +23,10 @@ Route::prefix('admin')
     Route::post('profiles/{id}/permissions', 'ACL\PermissionProfileController@attachPermissionsProfile')->name('profiles.permissions.attach');
     // Route::any('profiles/{id}/permissions/create/search', 'ACL\PermissionProfileController@filterPermissionsAvailable')->name('profiles.permissions.available.search');
     Route::any('profiles/{id}/permissions/create', 'ACL\PermissionProfileController@permissionsAvailable')->name('profiles.permissions.available');
+    Route::get('permissions/{id}/profile', 'ACL\PermissionProfileController@profiles')->name('permissions.profiles');
+    /**
+     * Profiles x Permission
+     */
     Route::get('profiles/{id}/permissions', 'ACL\PermissionProfileController@permissions')->name('profiles.permissions');
 
     /**
@@ -73,3 +78,10 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('welcome');
 });
+
+/**
+ * Auth Routes
+ */
+Auth::routes(/* ['register' => false] */); /** argumento passado para não permitir registros de usuários */
+
+// Route::get('/home', 'HomeController@index')->name('home');
