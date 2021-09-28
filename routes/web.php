@@ -16,6 +16,12 @@ Route::prefix('admin')
         ->group(function(){
 
     /**
+     * Routes Users
+     */
+    Route::any('users/search', 'UserController@search')->name('users.search');
+    Route::resource('users', 'UsersController');
+
+    /**
      * Permission x Profiles
      */
 
@@ -76,8 +82,12 @@ Route::prefix('admin')
 // Route::get('admin', 'Admin\PlanController@index')->name('admin.index');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Site\SiteController@index')->name('site.home');
 });
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 /**
  * Auth Routes
