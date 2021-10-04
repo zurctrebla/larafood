@@ -51,6 +51,8 @@ Route::prefix('admin')
      * Routes Details Plans
      */
     Route::get('plans/{url}/details', 'DetailPlanController@index')->name('details.plans.index');
+    Route::delete('plans/{url}/details/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
+    Route::get('plans/{url}/details/{idDetail}', 'DetailPlanController@show')->name('details.plan.show');
 
     /**
      * Routes Plans
