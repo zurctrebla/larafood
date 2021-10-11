@@ -1,13 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', "Perfis da permissão {$permission->name}")
+@section('title', "Perfis do plano {$plan->name}")
 
 @section('content_header')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.index') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active"><a href="{{route('profiles.index') }}" class="active">Perfis</a></li>
+        <li class="breadcrumb-item"><a href="{{route('plans.index') }}">Planos</a></li>
+        <li class="breadcrumb-item active"><a href="{{route('plans.profiles', $plan->id) }}" class="active">Perfis</a></li>
     </ol>
-    <h1>Perfis da permissão <strong>{{$permission->name}}</strong>
+    <h1>Perfis do plano <strong>{{$plan->name}}</strong>
+        <a href="{{ route('plans.profiles.available', $plan->id) }}" class="btn btn-dark">ADD NOVO PERFIL</a></h1>
 @stop
 @include('admin.includes.alerts')
 @section('content')
@@ -27,7 +29,7 @@
                                 {{ $profile->name }}
                             </td>
                             <td style="width=10px;">
-                                <a href="{{ route('profiles.permissions.detach', [$profile->id, $permission->id]) }}" class="btn btn-danger">Desvincular</a>
+                                <a href="{{ route('plans.profiles.detach', [$plan->id, $profile->id]) }}" class="btn btn-danger">Desvincular</a>
                             </td>
                         </tr>
                     @endforeach
