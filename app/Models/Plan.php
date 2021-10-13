@@ -18,6 +18,11 @@ class Plan extends Model
         return $this->belongsToMany(Profile::class);
     }
 
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class);
+    }
+
     public function search($filter = null)
     {
         $results = $this->where('name', 'LIKE', "%{$filter}%")
@@ -26,7 +31,8 @@ class Plan extends Model
 
         return $results;
     }
-        /**
+
+    /**
      * Profiles not linked with this plan
      */
     public function profilesAvailable($filter = null)

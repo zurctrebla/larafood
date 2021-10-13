@@ -6,9 +6,9 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.index') }}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{{route('profiles.index') }}">Perfis</a></li>
-        <li class="breadcrumb-item active"><a href="{{route('profiles.plans') }}" class="active">Planos</a></li>
+        <li class="breadcrumb-item active"><a href="{{route('profiles.plans', $profile->id) }}" class="active">Planos</a></li>
     </ol>
-    <h1>Planos do perfil <strong>{{$plan->name}}</strong>
+    <h1>Planos do perfil <strong>{{$profile->name}}</strong>
 @stop
 
 @section('content')
@@ -28,7 +28,7 @@
                                 {{ $plan->name }}
                             </td>
                             <td style="width=10px;">
-                                <a href="{{ route('plans.profile.detach', [$plan->id, $profile->id]) }}" class="btn btn-danger">Desvincular</a>
+                                <a href="{{ route('plans.profiles.detach', [$plan->id, $profile->id]) }}" class="btn btn-danger">Desvincular</a>
                             </td>
                         </tr>
                     @endforeach

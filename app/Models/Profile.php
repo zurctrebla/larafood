@@ -8,7 +8,6 @@ class Profile extends Model
 {
     protected $fillable = ['name', 'description'];
 
-
     /**
      * Get Permissions
      */

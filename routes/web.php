@@ -15,11 +15,18 @@ Route::prefix('admin')
         ->middleware('auth')
         ->group(function(){
 
+
+    /**
+     * Routes Categories
+     */
+    Route::any('categories/search', 'CategoryController@search')->name('categories.search');
+    Route::resource('categories', 'CategoryController');
+
     /**
      * Routes Users
      */
     Route::any('users/search', 'UserController@search')->name('users.search');
-    Route::resource('users', 'UsersController');
+    Route::resource('users', 'UserController');
 
     /**
      * Plan x Profile
@@ -59,8 +66,10 @@ Route::prefix('admin')
     /**
      * Routes Details Plans
      */
-    Route::get('plans/{url}/details', 'DetailPlanController@index')->name('details.plans.index');
+
     Route::delete('plans/{url}/details/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
+    Route::get('plans/{url}/details/create', 'DetailPlanController@create')->name('details.plan.create');
+    Route::get('plans/{url}/details', 'DetailPlanController@index')->name('details.plans.index');
     Route::get('plans/{url}/details/{idDetail}', 'DetailPlanController@show')->name('details.plan.show');
 
     /**
@@ -81,20 +90,12 @@ Route::prefix('admin')
     Route::get('/', 'PlanController@index')->name('admin.index');
 });
 
-// Route::get('admin/plans/create', 'Admin\PlanController@create')->name('plans.create');
-// Route::put('admin/plans/{url}', 'Admin\PlanController@update')->name('plans.update');
-// Route::get('admin/plans/{url}/edit', 'Admin\PlanController@edit')->name('plans.edit');
-// Route::any('admin/plans/search', 'Admin\PlanController@search')->name('plans.search');
-// Route::delete('admin/plans/{url}', 'Admin\PlanController@destroy')->name('plans.destroy');
-// Route::get('admin/plans/{url}', 'Admin\PlanController@show')->name('plans.show');
-// Route::post('admin/plans', 'Admin\PlanController@store')->name('plans.store');
-// Route::get('admin/plans', 'Admin\PlanController@index')->name('plans.index');
+/**
+ * Site
+ */
 
-// Route::get('admin', 'Admin\PlanController@index')->name('admin.index');
-
-Route::get('/', function () {
-    return view('Site\SiteController@index')->name('site.home');
-});
+Route::get('/plan/{url}', 'Site\SiteController@plan')->name('plan.subscription');
+Route::get('/', 'Site\SiteController@index')->name('site.home');
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -103,6 +104,4 @@ Route::get('/', function () {
 /**
  * Auth Routes
  */
-Auth::routes(/* ['register' => false] */); /** argumento passado para não permitir registros de usuários */
-
-// Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes();

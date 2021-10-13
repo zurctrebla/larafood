@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->repository->paginate();
+        $users = $this->repository->tenantUser()->paginate();
 
         return view('admin.pages.users.index', compact('users'));
     }
@@ -45,7 +45,11 @@ class UserController extends Controller
      */
     public function store(StoreUpdateUser $request)
     {
-        $this->repository->create($request->all());
+        $data = $request->all();
+        $data['tenant_id'] = auth()->user()->tenant_id;
+        $data['password'] = bcrypt($data['password']);  //  encrypt password
+
+        $this->repository->create($data);
 
         return redirect()->route('users.index');
     }
@@ -58,7 +62,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        if(!$user = $this->repository->find($id)){
+        if(!$user = $this->repository->tenantUser()->find($id)){
             return redirect()->back();
         }
 
@@ -73,9 +77,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = $this->repository->where('id', $id)->first();
-
-        if(!$user)
+        if(!$user = $this->repository->tenantUser()->find($id))
             return redirect()->back();
 
         return view('admin.pages.users.edit',[
@@ -92,13 +94,17 @@ class UserController extends Controller
      */
     public function update(StoreUpdateuser $request, $id)
     {
-        $user = $this->repository->where('id', $id)->first();
-
-        if(!$user)
+        if(!$user = $this->repository->tenantUser()->find($id))
             return redirect()->back();
 
+        $data = $request->only(['name', 'email']);
+
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+
         // dd($request->all());
-        $user->update($request->all());
+        $user->update($data);
 
         return redirect()->route('users.index');
     }
@@ -111,7 +117,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->repository->where('id', $id)->first();
+        $user = $this->repository->tenantUser()->where('id', $id)->first();
 
         if(!$user)
             return redirect()->back();
@@ -138,9 +144,10 @@ class UserController extends Controller
                                 ->where(function($query) use ($request){
                                     if($request->filter){
                                         $query->where('name', $request->filter)
-                                                ->orWhere('description', 'LIKE', "%{$request->filter}%");
+                                                ->orWhere('email', 'LIKE', "%{$request->filter}%");
                                     }
                                 })
+                                ->tenantUser()
                                 ->paginate();
 
         return view('admin.pages.users.index', compact('users', 'filters'));

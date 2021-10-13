@@ -32,7 +32,7 @@ class PlanProfileController extends Controller
     public function plans($idProfile)
     {
 
-        if(!$profile = $this->plan->find($idProfile)){
+        if(!$profile = $this->profile->find($idProfile)){
             return redirect()->back();
         }
 
